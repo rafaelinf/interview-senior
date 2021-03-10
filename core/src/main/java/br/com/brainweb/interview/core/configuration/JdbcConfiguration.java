@@ -24,11 +24,11 @@ public class JdbcConfiguration {
     private String password;
 
     @Value("${jdbc.schema}")
-    private String schema;
+    private String schema;    
 
     @Bean
     public DataSource dataSource() {
-
+    	
         HikariDataSource dataSource = new HikariDataSource();
 
         dataSource.setDriverClassName(org.postgresql.Driver.class.getName());

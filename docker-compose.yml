@@ -1,0 +1,13 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:12.2
+    environment:
+      - POSTGRES_DB=interview_service
+      - POSTGRES_USER=brainweb
+      - POSTGRES_PASSWORD=brainweb
+      - TZ=GMT
+    ports:
+      - 5432:5432
+    volumes:
+      - ./init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
