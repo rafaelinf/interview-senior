@@ -1,21 +1,21 @@
 package br.com.brainweb.interview.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.brainweb.interview.controller.HeroController;
 import br.com.brainweb.interview.dto.CreateHeroDTO;
-import br.com.brainweb.interview.dto.HeroDTO;
 import br.com.brainweb.interview.dto.UpdateHeroDTO;
 import br.com.brainweb.interview.exception.HeroExistsException;
 import br.com.brainweb.interview.exception.NotFoundException;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.repository.HeroRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class HeroService {
 
@@ -26,6 +26,8 @@ public class HeroService {
 	private PowerStatsService powerStatsService;
 	
 	public Hero save(CreateHeroDTO createHeroDTO) {
+		
+		log.info("Save hero.");
 		
 		if(heroRepository.existsHeroByName(createHeroDTO.getName())) {
 			throw new HeroExistsException();
@@ -57,10 +59,11 @@ public class HeroService {
 		
 	}
 	
-	public void delete(String id) {
+	public boolean delete(String id) {
 		
 		Hero hero = this.findHeroById(id);
 		heroRepository.delete(hero);
+		return true;
 		
 	}
 	
@@ -84,16 +87,5 @@ public class HeroService {
 		return hero.get();
 	}		
 	
-	public List<HeroDTO> findHeroes(){
-
-		List<HeroDTO> ls = new ArrayList<>();
-
-//		List<Optional> listAll = this.heroRepository.findAll();
-//		for (Hero h : listAll) {
-//			ls.add(HeroDTO.builder().id(h.getId()).build());
-//		}
-		
-		return ls;
-	}
 	
 }

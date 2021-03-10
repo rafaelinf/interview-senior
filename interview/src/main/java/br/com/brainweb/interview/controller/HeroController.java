@@ -1,7 +1,5 @@
 package br.com.brainweb.interview.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.brainweb.interview.converter.Converter;
@@ -33,7 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "API Hero")
 @Slf4j
-@RestController("/hero")
+@RestController
+@RequestMapping("hero")
 @Validated
 public class HeroController {
 
@@ -60,7 +60,7 @@ public class HeroController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = UpdateHeroDTO.class)) }),
 			@ApiResponse(responseCode = "404", description = "Not Found.", content = @Content)})
 	@PutMapping("/{id}")
-	public ResponseEntity<HeroDTO> save(
+	public ResponseEntity<HeroDTO> update(
 			@PathVariable("id") String id,
 			@Valid @RequestBody UpdateHeroDTO updateHeroDTO) {
 
@@ -110,16 +110,4 @@ public class HeroController {
 		return ResponseEntity.status(HttpStatus.OK).body(Converter.conveterToDTO(hero));
 	}		
 
-	@Operation(summary = "Retorna todos os herois.")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Resposta OK.", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = HeroDTO.class)) })})	
-	@GetMapping("/heroes")
-	public ResponseEntity<List<HeroDTO>> findHumanPopulationRatio() {
-
-		log.info("Calling the service that returns all heroes.");
-
-		List<HeroDTO> listHeores = heroService.findHeroes();
-		return ResponseEntity.status(HttpStatus.OK).body(listHeores);
-	}	
 }
